@@ -1,11 +1,5 @@
 from scipy.optimize import linprog
 
-def getObj(vertices):
-  return [1 for i in range(len(vertices))]
-
-def getBounds(vertices):
-  return [(0, 1) for i in range(len(vertices))]
-
 def getConstraints(vertices, edges):
   # edges must be in tuples
   ri = [[-1] for i in range(len(edges))]
@@ -21,15 +15,22 @@ def getVertexCover(vertices, edges):
   '''
   Get vertex cover using linear programming
   '''
-  obj = getObj(vertices)
-  bnd = getBounds(vertices)
+  # Create objective function:
+  # Minimize: 1*x_v1 + 1*x_v2 ... 1*x_vn
+  obj = [1 for i in range(len(vertices))]
+  # Create bounds: 
+  # for each v: (0 <= x_v <= 1)
+  bnd = [(0, 1) for i in range(len(vertices))]
   l, r = getConstraints(vertices, edges)
   sol = linprog(c=obj, A_ub=l, b_ub=r, bounds=bnd, method="revised simplex")
   return sol
 
 if __name__ == "__main__":
+  # insert number of vertices here
   numOfVertices = 14 
+  # create vertices from 0 - n
   vertices = [i for i in range(numOfVertices)]
+  # insert undirected edges here in tuples
   edges = [
     (0, 1),
     (1, 2),
@@ -50,4 +51,4 @@ if __name__ == "__main__":
   ]
   opt = getVertexCover(vertices, edges)
   print(opt)
-  
+
