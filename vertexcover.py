@@ -1,11 +1,12 @@
 from scipy.optimize import linprog
+import numpy as np
 
 def getConstraints(vertices, edges):
   # edges must be in tuples
-  ri = [[-1] for i in range(len(edges))]
+  ri = np.ones(len(edges)) * -1
   le = []
   for e in edges:
-    c = [0 for i in range(len(vertices))]
+    c = np.zeros(len(vertices))
     c[e[0]] = -1
     c[e[1]] = -1
     le.append(c)
@@ -17,7 +18,7 @@ def getVertexCover(vertices, edges):
   '''
   # Create objective function:
   # Minimize: 1*x_v1 + 1*x_v2 ... 1*x_vn
-  obj = [1 for i in range(len(vertices))]
+  obj = np.ones(len(vertices))
   # Create bounds: 
   # for each v: (0 <= x_v <= 1)
   bnd = [(0, 1) for i in range(len(vertices))]
@@ -29,7 +30,7 @@ if __name__ == "__main__":
   # insert number of vertices here
   numOfVertices = 14 
   # create vertices from 0 - n
-  vertices = [i for i in range(numOfVertices)]
+  vertices = np.arange(numOfVertices)
   # insert undirected edges here in tuples
   edges = [
     (0, 1),
